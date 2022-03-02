@@ -6,18 +6,23 @@
 
 
 int main() {
-    char* restCall = RESTget();
 
     initscr();
+    cbreak();
 
-    cJSON *json = cJSON_Parse(restCall);
-    json = cJSON_GetObjectItemCaseSensitive(json, "truck");
-    truckInfo truck = buildTruck(json);
-    printw("speed: %f\nlowbeans: %d\n highbeams: %d",truck.speed, truck.headlights, truck.highbeams);
-    refresh();
-    getch();
+    char* rest;
+    cJSON *json;
 
-    free(restCall);
+    for (;;) {
+        rest = RESTget();
+        erase();
+        json = cJSON_Parse(rest);
+        json = cJSON_GetObjectItemCaseSensitive(json, "truck");
+        truckInfo truck = buildTruck(json);
+        printw("speed: %f\nlowbeans: %d\n highbeams: %d",truck.speed, truck.headlights, truck.highbeams);
+        refresh();
+    }
+    
     free(json);
 
     endwin();

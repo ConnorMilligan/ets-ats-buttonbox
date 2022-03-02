@@ -4,6 +4,7 @@
 #include <cjson/cJSON.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <ncurses.h>
 
 typedef struct truckInfo
 {
@@ -13,5 +14,6 @@ typedef struct truckInfo
 } truckInfo;
 
 truckInfo buildTruck(cJSON *json);
+void writeTruckInfo(int starty, int startx, truckInfo *truck);
 
 #endif

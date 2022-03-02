@@ -43,6 +43,6 @@ char* RESTget() {
 
         /* always cleanup */
         curl_easy_cleanup(curl);
-        return chunk.response;
     }
+    return chunk.response;
 }

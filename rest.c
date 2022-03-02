@@ -22,7 +22,7 @@
     return realsize;
  }
 
-void RESTget(char *rest) {
+char* RESTget() {
     CURL *curl;
     CURLcode res;
     struct memory chunk = {0};
@@ -40,11 +40,9 @@ void RESTget(char *rest) {
         
         if(res != CURLE_OK)
             fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
-        rest = (char *) realloc(rest, chunk.size);
-        strcpy(rest, chunk.response);
-
 
         /* always cleanup */
         curl_easy_cleanup(curl);
+        return chunk.response;
     }
 }

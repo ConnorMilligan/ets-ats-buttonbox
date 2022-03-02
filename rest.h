@@ -7,6 +7,6 @@
 #include <string.h>
 #include <curl/curl.h>
 
-void RESTget(char* rest);
+char* RESTget();
 
 #endif

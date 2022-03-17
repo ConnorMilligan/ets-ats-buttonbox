@@ -4,7 +4,7 @@ truckInfo buildTruck(cJSON *json) {
     truckInfo truck = {
         cJSON_GetObjectItemCaseSensitive(json, "speed")->valuedouble,
         cJSON_GetObjectItemCaseSensitive(json, "lightsBeamLowOn")->valueint,
-        cJSON_GetObjectItemCaseSensitive(json, "lightsBeamHighOn")->valueint
+        //cJSON_GetObjectItemCaseSensitive(json, "lightsBeamHighOn")->valueint
     };
 
     return truck;
@@ -27,6 +27,16 @@ void writeTruckInfo(int starty, int startx, truckInfo *truck) {
         } else {
             attron(COLOR_PAIR(2));
             mvprintw(starty + 1, startx + 13, "OFF");
+            attroff(COLOR_PAIR(2));
+        }
+        mvprintw(starty + 2, startx, "Highbeams: ");
+        if (truck->highbeams == TRUE) {
+            attron(COLOR_PAIR(1));
+            mvprintw(starty + 2, startx + 13, "ON");
+            attroff(COLOR_PAIR(1));
+        } else {
+            attron(COLOR_PAIR(2));
+            mvprintw(starty + 2, startx + 13, "OFF");
             attroff(COLOR_PAIR(2));
         }
         

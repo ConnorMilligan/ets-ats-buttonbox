@@ -29,7 +29,7 @@ char* RESTget() {
 
     curl = curl_easy_init();
     if(curl) {
-        curl_easy_setopt(curl, CURLOPT_URL, "http://192.168.1.11:25555/api/ets2/telemetry");
+        curl_easy_setopt(curl, CURLOPT_URL, "http://192.168.1.7:25555/api/ets2/telemetry");
         /* example.com is redirected, so we tell libcurl to follow redirection */
         curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
         /* Perform the request, res will get the return code */

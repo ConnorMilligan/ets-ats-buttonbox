@@ -1,6 +1,7 @@
 /*
 	Create a TCP socket
 */
+//cl winclient.c
 
 #include<stdio.h>
 #include<winsock2.h>
@@ -8,7 +9,6 @@
 
 #pragma comment(lib,"ws2_32.lib")
 #pragma comment(lib,"user32.lib")
-
 
 int main(int argc , char *argv[])
 {
@@ -60,12 +60,54 @@ int main(int argc , char *argv[])
 	//Receive a reply from the server
 	for (;;) {
 		(recv_size = recv(s , server_reply , 2000 , 0));
-		if (server_reply[0] != 0) {
+		if (server_reply[0] == 49) {
 			printf("%s\n", server_reply);
-            UINT uSent = SendInput(ARRAYSIZE(inputs), inputs, sizeof(INPUT));
-			for (int i = 0; i<1024; i++) {
-				server_reply[i] = 0;
-			}
+			// Press pageup key
+			keybd_event( VK_PRIOR, 0x49, KEYEVENTF_EXTENDEDKEY | 0, 0 );
+			// Simulate a key release
+			keybd_event( VK_PRIOR, 0x49, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
+		}
+		else if (server_reply[0] == 50) {
+			printf("%s\n", server_reply);
+			// Press pageup key
+			keybd_event( VK_NEXT, 0x51, KEYEVENTF_EXTENDEDKEY | 0, 0 );
+			// Simulate a key release
+			keybd_event( VK_NEXT, 0x51, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
+		}
+		 else if (server_reply[0] == 51) {
+			printf("%s\n", server_reply);
+			// Press end key
+			keybd_event( VK_END, 0x4F, KEYEVENTF_EXTENDEDKEY | 0, 0 );
+			// Simulate a key release
+			keybd_event( VK_END, 0x4F, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
+		}
+		else if (server_reply[0] == 52) {
+			printf("%s\n", server_reply);
+			// Press home key
+			keybd_event( VK_HOME, 0x24, KEYEVENTF_EXTENDEDKEY | 0, 0 );
+			// Simulate a key release
+			keybd_event( VK_HOME, 0x24, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
+		}
+		else if (server_reply[0] == 53) {
+			printf("%s\n", server_reply);
+			// Press insert key
+			keybd_event( VK_INSERT, 0x52, KEYEVENTF_EXTENDEDKEY | 0, 0 );
+			// Simulate a key release
+			keybd_event( VK_INSERT, 0x52, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
+			
+		}
+		else if (server_reply[0] == 54) {
+			printf("%s\n", server_reply);
+			// Press delete key 
+			keybd_event( VK_DELETE, 0x53, KEYEVENTF_EXTENDEDKEY | 0, 0 );
+			// Simulate a key release
+			keybd_event( VK_DELETE, 0x53, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
+		}
+		
+
+		//clear the server_reply buffer
+		for (int i = 0; i<1024; i++) {
+			server_reply[i] = 0;
 		}
 	}
 

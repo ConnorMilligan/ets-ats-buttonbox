@@ -9,8 +9,12 @@
 typedef struct truckInfo
 {
     double speed;
-    int headlights;
-    int highbeams;
+    int pbrake;
+    int ebrake;
+    int ldax;
+    int diffLock;
+    int highbeam;
+    int trailer;
 } truckInfo;
 
 truckInfo buildTruck(cJSON *json);

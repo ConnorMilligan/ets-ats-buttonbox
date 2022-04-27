@@ -3,7 +3,7 @@
 
 #include "rest.h"
 #include "truckInfo.h"
-#include "pindef.h"
+#include "display.h"
 
 #include <netinet/in.h>
 #include <stdio.h>
@@ -11,8 +11,17 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include <pthread.h>
 #define PORT 8080
 
+int truckSpeed = 0;
+
+void *displayThread(int *num) {
+    for (;;) {
+        displayNum(*num);
+    }
+    pthread_exit(NULL);
+}
 
 int main() {
     wiringPiSetupGpio();
@@ -24,12 +33,10 @@ int main() {
     cJSON *json;
     truckInfo truck, tempTruck;
 
-    int server_fd, new_socket, valread;
+    int server_fd, new_socket, rc;
     struct sockaddr_in address;
     int opt = 1;
     int addrlen = sizeof(address);
-    char buffer[1024] = { 0 };
-    char* hello = "Hello from server";
  
     // Creating socket file descriptor
     if ((server_fd = socket(AF_INET, SOCK_STREAM, 0))
@@ -67,18 +74,41 @@ int main() {
         perror("accept");
         exit(EXIT_FAILURE);
     }
+    pthread_t thread;
+    rc = pthread_create(&thread, NULL, displayThread, &truckSpeed);
+    if (rc) {
+        printf("Error:unable to create thread, %d\n", rc);
+        exit(-1);
+    }
 
     for (;;) {
         erase();
         json = cJSON_Parse(RESTget());
-        json = cJSON_GetObjectItemCaseSensitive(json, "truck");
         tempTruck = buildTruck(json);
-        tempTruck.highbeams = (digitalRead(highbeamPin) == HIGH);
-        if (tempTruck.highbeams != truck.highbeams) {
-            send(new_socket, hello, strlen(hello), 0);
+        tempTruck.highbeam = (digitalRead(highbeamPin) == HIGH);
+        tempTruck.pbrake = (digitalRead(pbrakePin) == HIGH);
+        tempTruck.ebrake = (digitalRead(ebrakePin) == HIGH);
+        tempTruck.ldax = (digitalRead(ldaxPin) == HIGH);
+        tempTruck.diffLock = (digitalRead(diffLockPin) == HIGH);
+        tempTruck.trailer = (digitalRead(trailerPin) == HIGH);
+
+        if (tempTruck.highbeam != truck.highbeam) {
+            send(new_socket, "1) Highbeams toggled", 21, 0);
+        } if (tempTruck.pbrake != truck.pbrake) {
+            send(new_socket, "2) Parking Brake toggled", 25, 0);
+        } if (tempTruck.ebrake != truck.ebrake) {
+            send(new_socket, "3) Engine Brake toggled", 24, 0);
+        } if (tempTruck.ldax != truck.ldax) {
+            send(new_socket, "4) Drop/Lift Axel toggled", 26, 0);
+        } if (tempTruck.diffLock != truck.diffLock) {
+            send(new_socket, "5) Differential Lock toggled", 29, 0);
+        } if (tempTruck.trailer != truck.trailer) {
+            send(new_socket, "6) Trailler Attach/Detach toggled", 34, 0);
         }
-        truck = tempTruck;
+
         writeTruckInfo(1, 1, &truck);
+        truck = tempTruck;
+        truckSpeed = truck.speed;
         refresh();
     }
     

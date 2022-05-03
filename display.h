@@ -9,6 +9,8 @@ int getdigit(int num, int n);
 
 void resetDisplay();
 
+void initDisplay();
+
 void setNum(int num);
 
 int displayNum(int num);

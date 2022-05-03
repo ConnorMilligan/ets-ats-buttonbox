@@ -43,7 +43,7 @@ void writeTruckInfo(int starty, int startx, truckInfo *truck) {
             attroff(COLOR_PAIR(2));
         }
         mvprintw(starty + 3, startx, "Engine Brake: ");
-        if (truck->pbrake == TRUE) {
+        if (truck->ebrake == TRUE) {
             attron(COLOR_PAIR(1));
             mvprintw(starty + 3, startx + 15, "ON");
             attroff(COLOR_PAIR(1));
@@ -53,7 +53,7 @@ void writeTruckInfo(int starty, int startx, truckInfo *truck) {
             attroff(COLOR_PAIR(2));
         }
         mvprintw(starty + 4, startx, "Trailer: ");
-        if (truck->pbrake == TRUE) {
+        if (truck->trailer == TRUE) {
             attron(COLOR_PAIR(1));
             mvprintw(starty + 4, startx + 10, "Attached");
             attroff(COLOR_PAIR(1));

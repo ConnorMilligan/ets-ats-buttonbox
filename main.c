@@ -28,7 +28,21 @@ int main() {
     initscr();
     cbreak();
 
+    initDisplay();
+    pinMode(pbrakePin, INPUT);
+    pinMode(ebrakePin, INPUT);
+    pinMode(ldaxPin, INPUT);
+    pinMode(diffLockPin, INPUT);
     pinMode(highbeamPin, INPUT);
+    pinMode(trailerPin, INPUT);
+
+    pinMode(pbrakeLED, OUTPUT);
+    pinMode(ebrakeLED, OUTPUT);
+    pinMode(ldaxLED, OUTPUT);
+    pinMode(diffLockLED, OUTPUT);
+    pinMode(highbeamLED, OUTPUT);
+    pinMode(trailerLED, OUTPUT);
+
 
     cJSON *json;
     truckInfo truck, tempTruck;
@@ -91,6 +105,13 @@ int main() {
         tempTruck.ldax = (digitalRead(ldaxPin) == HIGH);
         tempTruck.diffLock = (digitalRead(diffLockPin) == HIGH);
         tempTruck.trailer = (digitalRead(trailerPin) == HIGH);
+
+        digitalWrite(pbrakeLED, tempTruck.pbrake == 1 ? HIGH : LOW);
+        digitalWrite(ebrakeLED, tempTruck.ebrake == 1 ? HIGH : LOW);
+        digitalWrite(ldaxLED, tempTruck.ldax == 1 ? HIGH : LOW);
+        digitalWrite(diffLockLED, tempTruck.diffLock == 1 ? HIGH : LOW);
+        digitalWrite(highbeamLED, tempTruck.highbeam == 1 ? HIGH : LOW);
+        digitalWrite(trailerLED, tempTruck.trailer == 1 ? HIGH : LOW);
 
         if (tempTruck.highbeam != truck.highbeam) {
             send(new_socket, "1) Highbeams toggled", 21, 0);

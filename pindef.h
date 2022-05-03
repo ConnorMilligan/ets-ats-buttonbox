@@ -5,9 +5,17 @@
 #define ebrakePin 27
 #define ldaxPin 22
 
-#define diffLockPin 13
-#define highbeamPin 19
-#define trailerPin 26
+#define diffLockPin 10
+#define highbeamPin 9
+#define trailerPin 11
+
+#define pbrakeLED 2
+#define ebrakeLED 3
+#define ldaxLED 4
+
+#define diffLockLED 13
+#define highbeamLED 19
+#define trailerLED 26
 
 #define b 14
 #define d3 15

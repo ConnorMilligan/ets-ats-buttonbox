@@ -26,6 +26,22 @@ void resetDisplay() {
     digitalWrite (d4, HIGH);
 }
 
+void initDisplay() {
+    pinMode(a, OUTPUT);
+    pinMode(b, OUTPUT);
+    pinMode(c, OUTPUT);
+    pinMode(d, OUTPUT);
+    pinMode(e, OUTPUT);
+    pinMode(f, OUTPUT);
+    pinMode(g, OUTPUT);
+    pinMode(dot, OUTPUT);
+    pinMode(d1, OUTPUT);
+    pinMode(d2, OUTPUT);
+    pinMode(d3, OUTPUT);
+    pinMode(d4, OUTPUT);
+    resetDisplay();
+}
+
 void setNum(int num) {
     if (num <= 9 && num >= 0){
         digitalWrite (a, LOW);
